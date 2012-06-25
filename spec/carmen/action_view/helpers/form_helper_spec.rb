@@ -57,7 +57,6 @@ class CarmenViewHelperTest < MiniTest::Unit::TestCase
       <select id="object_country_code" name="object[country_code]">
         <option value="ES">Eastasia</option>
         <option disabled>-------------</option>
-        <option value="ES">Eastasia</option>
         <option value="EU">Eurasia</option>
         <option value="OC">Oceania</option>
       </select>
@@ -131,8 +130,7 @@ class CarmenViewHelperTest < MiniTest::Unit::TestCase
       <select id="subregion_code" name="subregion_code">
         <option value="AO">Airstrip One</option>
         <option disabled>-------------</option>
-        <option value="AO">Airstrip One</option>
-      </select>
+       </select>
     HTML
 
     html = subregion_select_tag(:subregion_code, nil, oceania, :priority => ['AO'])
@@ -157,7 +155,6 @@ class CarmenViewHelperTest < MiniTest::Unit::TestCase
     expected = <<-HTML
       <option value="ES">Eastasia</option>
       <option disabled>-------------</option>
-      <option value="ES">Eastasia</option>
       <option value="EU">Eurasia</option>
     HTML
     html = region_options_for_select(regions, nil, :priority => ['ES'])

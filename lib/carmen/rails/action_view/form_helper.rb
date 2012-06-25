@@ -84,7 +84,7 @@ module ActionView
           end
         end
 
-        main_options = regions.map { |r| [r.name, r.code] }
+        main_options = regions.select{|r| !priority_region_codes.include?(r.code)}.map { |r| [r.name, r.code] }
         main_options.sort!{|a, b| a.first.unpack('U').to_s <=> b.first.unpack('U').to_s}
         region_options += options_for_select(main_options, selected)
         region_options.html_safe
@@ -107,8 +107,8 @@ module ActionView
       #   country_select_tag('country_code', {priority: ['US', 'CA']}, class: 'region')
       #
       # Returns an `html_safe` string containing the HTML for a select element.
-      def country_select_tag(name, value, options={})
-        subregion_select_tag(name, value, Carmen::World.instance, options)
+      def country_select_tag(name, value, options={}, html_options = {})
+        subregion_select_tag(name, value, Carmen::World.instance, options, html_options)
       end
 
       # Generate select and subregion option tags for the given object and method. A
@@ -135,9 +135,10 @@ module ActionView
         parent_region = determine_parent(parent_region_or_code)
         priority_regions = options.delete('priority') || []
         opts = region_options_for_select(parent_region.subregions, value, :priority => priority_regions)
-        html_options = {"name" => name,
-                        "id" => sanitize_to_id(name)}.update(html_options.stringify_keys)
-        content_tag(:select, opts, html_options)
+        #html_options = {"name" => name,
+        #                "id" => sanitize_to_id(name)}.update(html_options.stringify_keys)
+        #content_tag(:select, opts, html_options)
+	select_tag(name, opts, {"id" => sanitize_to_id(name)}.update(html_options.symbolize_keys))
       end
 
       private
